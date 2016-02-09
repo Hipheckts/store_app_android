@@ -1,0 +1,47 @@
+/* Styles go here */
+
+.spinner{
+  position:absolute;
+  top:50%;
+  left:50%;
+  margin-left:-25px;
+  margin-top:-25px;	
+}
+
+.spinner svg {
+  width: 50px;
+  height: 50px;
+  stroke: #dba634;
+  fill: #dba634;
+}
+
+.table_cart{ min-width:100%; display:block;}
+.table_cart thead{background:#3CC;}
+.table_cart td,.table_cart th{border:1px solid #e2e2e2; border-collapse:collapse; padding:3px; text-align:center;}
+
+.bar.bar-dark .title{left:32px !important;}
+.cart_button{font-size:26px; color:#fff; position:relative; float:right; margin:5px; z-index:10; border-radius:3px;}
+.account_button{font-size:26px; color:#fff; position:relative; float:right; margin:5px; z-index:10; border-radius:3px;}
+.small_logo_button.button.button-small.button-light{ padding:15px; font-size:26px; color:#fff; position:relative; float:right; margin:5px; z-index:10; border-radius:3px; background:#e2e2e2 url(../img/small_logo.png) no-repeat center center !important;}
+
+.detail_pro{position:absolute !important; background:none !important; border:none; right:0 !important; text-align:center !important; color:#444 !important; top:50% !important; z-index:2; font-size:40px !important; width:50px; height:50px; margin-top:-25px;}
+
+.menu.menu-left .scroll-content{background:url(../img/left_menu_bg.jpg) repeat-y;}
+.menu.menu-left .scroll-content .item{background:rgba(0,0,0,0.5); border-color:#999;}
+.menu.menu-left .scroll-content .item-content{background:none; color:#fff;}
+
+
+.main_logo{display:block; text-align:center; margin:10px auto 10px; width:200px; height:170px; background:url(../img/smp-logo-mark.png) no-repeat center center;}
+.small_logo{text-align:center;  position:relative; float:right; margin:5px; z-index:10; border:1px solid red; background:none;}
+.small_logo span{background:url(../img/small_logo.png) no-repeat center center; display:inline-block;width:35px; height:42px;}
+.logo_text{text-align:center; text-transform:uppercase; font-size:32px; margin:0; padding:0;}
+
+.cart_list h2{font-size:24px;}
+.cart_list p{font-size:18px; margin:5px 0;}
+.cart_list .button i{font-size:20px;}
+.cart_list .ion-close-round{position:absolute; top:10px; right:10px;}
+
+.cart_footer{}
+.cart_footer .list{margin-bottom:0;}
+.cart_footer .list.last{margin-bottom:20px;}
+
