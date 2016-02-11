@@ -88,6 +88,11 @@ app.controller('CategoryCtrl', function($scope, $http){
 
 app.controller('MensWomensProCtrl',[ '$scope', '$http','$location', '$stateParams','ngCart',function($scope,$http, $location, $stateParams, ngCart) {
      
+	// var current_user = sessionStorage.getItem('login_email');
+	 
+	 //$scope.currentUser = sessionStorage.getItem('login_email');
+	 //alert($scope.currentUser);
+     
 
 	$scope.data = {};	
     $scope.formData = {
@@ -152,3 +157,83 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
   	 ngCart.setShipping(2.99);   
 	//alert('bbb');
 }]);
+
+
+
+app.controller('HomeCtrl',function($scope, $http, $window){
+	
+	
+	 $(document).on("click",".register_link",function(){
+		$('form#signup_form').slideDown();
+		$('form#login_form').slideUp();
+	  });
+	  $(document).on("click",".login_link",function(){
+		$('form#signup_form').slideUp();
+		$('form#login_form').slideDown();
+	  });
+	  
+	  
+	  $scope.data = {};	
+      $scope.formData = {
+				'name': '',
+				'email':'',
+				'password':''
+			  };	 
+	  
+	  
+	  
+	  
+	  $scope.login_post = function(){
+		  $http({
+            method: 'POST',
+            url: 'http://ideaweaver.in/samples/mystore/login.php', 
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			data: $.param($scope.formData)
+			}).success(function(data, status) {
+				$scope.products = data;
+				sessionStorage.setItem('login_email', data[0].email);
+				//var favoriteCookie = sessionStorage.getItem('login_email');
+				//alert(favoriteCookie);
+				
+				if(data==0){
+					$scope.ErrorMsg = "Invalid login credentials, try again.";
+					$('.account_button').hide();	
+				}else{
+				  $window.location.href ='#/app/category';
+				  $('.account_button').show();	
+				}
+				
+			});	
+		  
+	  }
+	  
+	   $scope.register_post = function(){
+
+		 $http({
+            method: 'POST',
+            url: 'http://ideaweaver.in/samples/mystore/register.php', 
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			data: $.param($scope.formData)
+			}).success(function(data, status) {
+				$scope.products = data;
+				alert(data);
+			});
+
+		  
+	  }
+	  
+	
+});
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -19,6 +19,9 @@
 
 </style>
 
+
+
+
 <ion-view title="Home">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
@@ -30,25 +33,46 @@
          <div class="home_content">
            <div class="row responsive-sm">
              <div class="col">
-               <a href="#" class="main_logo"></a>
+               <a href="#" class="main_logo"><img src="img/smp-logo-mark.png"  /></a>
                <h3 class="logo_text">My Store</h3>
              </div>
            </div>
          
          </div>
-        
-        <div class="list">
+        <h4 class="assertive" ng-bind="ErrorMsg"></h4>
+        <div class="list">    
+         <form id="login_form" method="post" ng-submit="login_post()">
           <label class="item item-input item-stacked-label">
             <span class="input-label">Email</span>
-            <input type="text" placeholder="ashuarena@gmail.com">
+            <input required="required" type="email" placeholder="email@domain.com" ng-model="formData.email">
           </label>
           <label class="item item-input item-stacked-label">
             <span class="input-label">Password</span>
-            <input type="password" placeholder="******">
+            <input required="required" type="password" placeholder="******" ng-model="formData.password">
           </label>
-          <label class="item">
-            <button class="button button-block button-dark">Sign In</button>
+          <div style="border:1px solid #e2e2e2; margin-left:-1px; padding:10px; width:100.5%;">
+            <button type="submit" class="button button-dark">Sign In</button>
+            <a href="javascript:void(0);" class="register_link assertive" style="padding:10px; display:inline-block;">New User, Sign Up</a>
+          </div>  
+         </form> 
+         <form id="signup_form" method="post" style="display:none;" ng-submit="register_post()">
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Name</span>
+            <input required="required" type="text" placeholder="Your Name" ng-model="formData.name">
           </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Email</span>
+            <input required="required" type="email" placeholder="email@domain.com" ng-model="formData.email">
+          </label>
+          <label class="item item-input item-stacked-label">
+            <span class="input-label">Password</span>
+            <input required="required" type="password" placeholder="******" ng-model="formData.password">
+          </label>
+          <div style="border:1px solid #e2e2e2; margin-left:-1px; padding:10px; width:100.5%;">
+            <button type="submit" class="button button-dark">Sign Up</button>
+            <a href="javascript:void(0);" class="login_link assertive" style="padding:10px; display:inline-block;">Already a User, Login</a>
+          </div>   
+         </form> 
         </div>
          
           

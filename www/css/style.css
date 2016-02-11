@@ -31,10 +31,11 @@
 .menu.menu-left .scroll-content .item-content{background:none; color:#fff;}
 
 
-.main_logo{display:block; text-align:center; margin:10px auto 10px; width:200px; height:170px; background:url(../img/smp-logo-mark.png) no-repeat center center;}
+.main_logo{display:block; text-align:center; margin:10px auto 10px; width:180px; height:150px;}
+.main_logo img{width:auto; height:100%;}
 .small_logo{text-align:center;  position:relative; float:right; margin:5px; z-index:10; border:1px solid red; background:none;}
 .small_logo span{background:url(../img/small_logo.png) no-repeat center center; display:inline-block;width:35px; height:42px;}
-.logo_text{text-align:center; text-transform:uppercase; font-size:32px; margin:0; padding:0;}
+.logo_text{text-align:center; text-transform:uppercase; font-size:24px; margin:0; padding:0;}
 
 .cart_list h2{font-size:24px;}
 .cart_list p{font-size:18px; margin:5px 0;}
