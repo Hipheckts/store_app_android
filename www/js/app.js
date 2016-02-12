@@ -63,6 +63,13 @@ app.run(function($ionicPlatform) {
           templateUrl: "cart.html"
         }
       }
+    }).state('app.logout', {
+      url: "/logout",
+      views: {
+        'menuContent' :{
+          templateUrl: "logout.html"
+        }
+      }
     });
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/home');
@@ -87,12 +94,6 @@ app.controller('CategoryCtrl', function($scope, $http){
 
 
 app.controller('MensWomensProCtrl',[ '$scope', '$http','$location', '$stateParams','ngCart',function($scope,$http, $location, $stateParams, ngCart) {
-     
-	// var current_user = sessionStorage.getItem('login_email');
-	 
-	 //$scope.currentUser = sessionStorage.getItem('login_email');
-	 //alert($scope.currentUser);
-     
 
 	$scope.data = {};	
     $scope.formData = {
@@ -197,10 +198,14 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 				
 				if(data==0){
 					$scope.ErrorMsg = "Invalid login credentials, try again.";
-					$('.account_button').hide();	
+					$('.account_button').hide();
+					$('.logout_button').hide();	
+					$('.small_logo_button').show();
 				}else{
 				  $window.location.href ='#/app/category';
 				  $('.account_button').show();	
+				  $('.logout_button').show();	
+				  $('.small_logo_button').hide();
 				}
 				
 			});	
@@ -227,7 +232,20 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 
 
 
+app.controller('LogoutCtrl',function($scope, $http,$window){
+       
+	 sessionStorage.setItem('login_email','');   
+	 $scope.LogoutMsg = "You have successfully logout."; 
+   
+	  setTimeout(function(){
+		  $('.account_button').hide();
+		  $('.logout_button').hide(); 
+		  $('.small_logo_button').show();
+		  $window.location.href ='#/app/home';
+	  },2000);
 
+	
+});
 
 
 
