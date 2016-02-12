@@ -235,7 +235,8 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 
 app.controller('LogoutCtrl',function($scope, $http,$window){
 	
-		$scope.$on('$ionicView.enter', function() {			  
+		$scope.$on('$ionicView.enter', function() {	
+		      sessionStorage.setItem('login_email', '');		  
 			  $scope.LogoutMsg = "You have successfully logout.";
 			  $('.account_button').hide();
 			  $('.small_logo_button').show();
