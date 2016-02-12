@@ -67,7 +67,8 @@ app.run(function($ionicPlatform) {
       url: "/logout",
       views: {
         'menuContent' :{
-          templateUrl: "logout.html"
+          templateUrl: "logout.html",
+		  controller:'LogoutCtrl'
         }
       }
     });
@@ -233,19 +234,20 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 
 
 app.controller('LogoutCtrl',function($scope, $http,$window){
-       
-	 sessionStorage.setItem('login_email','');   
-	 $scope.LogoutMsg = "You have successfully logout."; 
-   
-	  setTimeout(function(){
-		  $('.account_button').hide();
-		  $('.logout_button').hide(); 
-		  $('.small_logo_button').show();
-		  $window.location.href ='#/app/home';
-	  },2000);
-
 	
+		$scope.$on('$ionicView.enter', function() {			  
+			  $scope.LogoutMsg = "You have successfully logout.";
+			  $('.account_button').hide();
+			  $('.small_logo_button').show();
+			  $('.logout_button').hide();
+			  setTimeout(function(){	
+				$window.location.href ='#/app/home';
+			  },2000);
+		});
+			
 });
+
+
 
 
 
