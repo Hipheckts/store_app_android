@@ -63,6 +63,13 @@ app.run(function($ionicPlatform) {
           templateUrl: "cart.html"
         }
       }
+    }).state('app.account', {
+      url: "/account",
+      views: {
+        'menuContent' :{
+          templateUrl: "account.html"
+        }
+      }
     }).state('app.logout', {
       url: "/logout",
       views: {
@@ -192,7 +199,7 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 			data: $.param($scope.formData)
 			}).success(function(data, status) {
-				$scope.products = data;
+				$scope.login = data;
 				sessionStorage.setItem('login_email', data[0].email);
 				//var favoriteCookie = sessionStorage.getItem('login_email');
 				//alert(favoriteCookie);
@@ -212,7 +219,15 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 			});	
 		  
 	  }
-	  
+	   
+	   
+	   $scope.formData = {
+				'name_reg': '',
+				'email_reg':'',
+				'password_reg':''
+			  };
+	   
+	   
 	   $scope.register_post = function(){
 
 		 $http({
@@ -221,8 +236,16 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 			data: $.param($scope.formData)
 			}).success(function(data, status) {
-				$scope.products = data;
-				alert(data);
+				$scope.register = data;
+				if(data==0){
+					$scope.ErrorMsg = "Email already exist!";				
+				}else{
+				  $window.location.href ='#/app/category';
+				  $('.account_button').show();	
+				  $('.logout_button').show();	
+				  $('.small_logo_button').hide();
+				  sessionStorage.setItem('login_email', $scope.formData.email_reg);
+				}
 			});
 
 		  
@@ -248,7 +271,101 @@ app.controller('LogoutCtrl',function($scope, $http,$window){
 			
 });
 
+app.controller('ProfileCtrl', function($scope, $http){
+	   
+	   
+	   $scope.data = {};	 
+       $scope.formData = { 
+				'logged_email':''
+			  };
+	   
+	   //alert(sessionStorage.getItem('login_email'));
+	   $scope.formData.logged_email = sessionStorage.getItem('login_email'); 
+	   $scope.get_user = function(){   
+	   $http({
+            method: 'POST',
+            url: 'http://ideaweaver.in/samples/mystore/profile_user.php', 
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			data: $.param($scope.formData)
+			}).success(function(data, status) {
+				$scope.details = data;
+				//alert(data[0].name);
+				$scope.formData = {		 
+					 'name_update': data[0].name,
+					 'email_update': data[0].email,
+					 'pass_update': data[0].password,
+					 'address1_update': data[0].address_1,
+					 'address2_update': data[0].address_2		 
+				 };
+			});
+	 }
+	 
+	 
+	 $scope.userUpdate = function(){  
+	  alert('Userupdate'); 
+	   $http({
+            method: 'POST',
+            url: 'http://ideaweaver.in/samples/mystore/user_update.php', 
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			data: $.param($scope.formData)
+			}).success(function(data, status) {
+				$scope.details = data;
+				if(data==0){
+					$scope.ErrorMsg = "Invalid email address.";
+				}else{
+					$scope.details = data;
+					$scope.formData = {		 
+					 'name_update': data[0].name,
+					 'email_update': data[0].email,
+					 'pass_update': data[0].password,
+					 'address1_update': data[0].address_1,
+					 'address2_update': data[0].address_2		 
+				 };
+				}
+			});
+	 }
+	 
+	 $(document).on("click",".choose_address_1",function(){
+		var getVal = $(this).find('.address_1').hasClass('ion-android-checkbox-outline');
+		if(getVal){
+			$(this).find('.address_1').removeClass('ion-android-checkbox-outline').addClass('ion-android-checkbox-outline-blank');
+			$('.address_2').addClass('ion-android-checkbox-outline').removeClass('ion-android-checkbox-outline-blank');
+			$("input[name=default_addres]").val(2);
+		}else{
+			$(this).find('.address_1').addClass('ion-android-checkbox-outline').removeClass('ion-android-checkbox-outline-blank');
+			$("input[name=default_addres]").val(1);
+			$('.address_2').removeClass('ion-android-checkbox-outline').addClass('ion-android-checkbox-outline-blank');
+		}
+	 });
+	 
+	 $(document).on("click",".choose_address_2",function(){
+		var getVal = $(this).find('.address_2').hasClass('ion-android-checkbox-outline');
+		if(getVal){
+			$(this).find('.address_2').removeClass('ion-android-checkbox-outline').addClass('ion-android-checkbox-outline-blank');
+			$('.address_1').addClass('ion-android-checkbox-outline').removeClass('ion-android-checkbox-outline-blank');
+			$("input[name=default_addres]").val(1);
+		}else{
+			$(this).find('.address_2').addClass('ion-android-checkbox-outline').removeClass('ion-android-checkbox-outline-blank');
+			$("input[name=default_addres]").val(2);
+			$('.address_1').removeClass('ion-android-checkbox-outline').addClass('ion-android-checkbox-outline-blank');
+		}
+	 });
+	 
+	 
+	 
+	 $(document).on("click",".open_update_form",function(){
+		 $('form#userUpdate').slideDown();
+		 $('.profile_overview').slideUp();		 
+	 });
+	 
+	 $(document).on("click",".close_form",function(){
+		 $('form#userUpdate').slideUp();
+		 $('.profile_overview').slideDown();		 
+	 });
+	 
+	 
 
+});
 
 
 

@@ -1,5 +1,10 @@
 /* Styles go here */
 
+
+body{background:#000;}
+
+body .pane{background:#000 url(../img/atlantic.jpg) no-repeat; background-size:100% 100%;}
+
 .spinner{
   position:absolute;
   top:50%;
@@ -35,7 +40,7 @@
 .main_logo img{width:auto; height:100%;}
 .small_logo{text-align:center;  position:relative; float:right; margin:5px; z-index:10; border:1px solid red; background:none;}
 .small_logo span{background:url(../img/small_logo.png) no-repeat center center; display:inline-block;width:35px; height:42px;}
-.logo_text{text-align:center; text-transform:uppercase; font-size:24px; margin:0; padding:0;}
+.logo_text{text-align:center; color:#fff; text-transform:uppercase; font-size:24px; margin:0; padding:0;}
 
 .cart_list h2{font-size:24px;}
 .cart_list p{font-size:18px; margin:5px 0;}
@@ -47,4 +52,19 @@
 .cart_footer .list.last{margin-bottom:20px;}
 
 .slide-menu-title{padding:7px 12px; font-size:18px; color:#fff; text-align:left;}
+
+/*--- Extras ------*/
+
+form .item-input input, form .item-input textarea{width:95%; background:none; color:#fff; border:none; border-bottom:1px solid #fff; padding:10px 0; margin:5px 0;}
+form .input-label{color:#fff;}
+form label.item{border:none; color:#fff;}
+
+.profile_overview .item{overflow:auto; text-overflow:inherit;white-space:normal;}
+
+form .item-radio input:checked + form .radio-content .item-content{background:#333!important; padding:10px !important; font-size:14px;}
+form .radio-content{border-bottom:1px solid #ddd;}
+form .radio-content .radio-icon{top:-8px !important; font-size:18px !important;}
+form .disable-user-behavior .item-content{background:#333 !important; padding:8px !important;}
+
+.clearfix{clear:both; width:100%;}
 
