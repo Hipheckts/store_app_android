@@ -171,7 +171,7 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 
 app.controller('HomeCtrl',function($scope, $http, $window){
 	
-	
+	 
 	 $(document).on("click",".register_link",function(){
 		$('form#signup_form').slideDown();
 		$('form#login_form').slideUp();
@@ -193,6 +193,9 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 	  
 	  
 	  $scope.login_post = function(){
+		  
+		  $('.home_loader').show();
+		  
 		  $http({
             method: 'POST',
             url: 'http://ideaweaver.in/samples/mystore/login.php', 
@@ -271,7 +274,7 @@ app.controller('LogoutCtrl',function($scope, $http,$window){
 			
 });
 
-app.controller('ProfileCtrl', function($scope, $http){
+app.controller('ProfileCtrl', function($scope, $http,$window){
   
 	   $scope.data = {};	 
        $scope.formData = { 
@@ -279,7 +282,7 @@ app.controller('ProfileCtrl', function($scope, $http){
 			  };
 	   
 	   //alert(sessionStorage.getItem('login_email'));
-	   $scope.formData.logged_email = sessionStorage.getItem('login_email'); 
+	   $scope.formData.logged_email = sessionStorage.getItem('login_email');  
 	   //alert($scope.formData.logged_email);
 	   $scope.get_user = function(){  
 	   //alert('GET USER'); 
@@ -290,19 +293,17 @@ app.controller('ProfileCtrl', function($scope, $http){
 			data: $.param($scope.formData)
 			}).success(function(data, status) {
 				$scope.details = data;
-				//alert(data[0].name);
 				$scope.formData = {		 
 					 'name_update': data[0].name,
 					 'email_update': data[0].email,
 					 'pass_update': data[0].password,
 					 'address1_update': data[0].address_1,
-					 'address2_update': data[0].address_2		 
+					 'address2_update': data[0].address_2
 				 };
+				 
 				 $('.account_loader').hide();
-			});
+			}); 
 	 }
-	 
-	 
 	 $scope.userUpdate = function(){ 
 	   $('.account_loader').show(); 
 	   $http({
@@ -311,21 +312,12 @@ app.controller('ProfileCtrl', function($scope, $http){
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 			data: $.param($scope.formData)
 			}).success(function(data, status) {
-				$scope.details = data;
-				if(data==0){
-					//alert('0');
-					$scope.ErrorMsg = "Invalid email address.";
-				}else{
-					//alert('1');
-					$scope.formData = {		 
-					 'name_update': data[0].name,
-					 'email_update': data[0].email,
-					 'pass_update': data[0].password,
-					 'address1_update': data[0].address_1,
-					 'address2_update': data[0].address_2		 
-				 };
-				}
-				$('.profile_overview').slideDown();
+				    $scope.details = data;
+					//alert(data);
+					$window.location.href ='#/app/account';
+					$('.account_loader').hide();
+				    $('.profile_overview').show();
+				    $('#userUpdate').hide();
 			});
 	 }
 	 
@@ -334,10 +326,10 @@ app.controller('ProfileCtrl', function($scope, $http){
 		if(getVal){
 			$(this).find('.address_1').removeClass('ion-android-checkbox-outline').addClass('ion-android-checkbox-outline-blank');
 			$('.address_2').addClass('ion-android-checkbox-outline').removeClass('ion-android-checkbox-outline-blank');
-			$("input[name=default_addres]").val(2);
+			$("input#default_address").val(2);
 		}else{
 			$(this).find('.address_1').addClass('ion-android-checkbox-outline').removeClass('ion-android-checkbox-outline-blank');
-			$("input[name=default_addres]").val(1);
+			$("input#default_address").val(1);
 			$('.address_2').removeClass('ion-android-checkbox-outline').addClass('ion-android-checkbox-outline-blank');
 		}
 	 });
@@ -347,10 +339,10 @@ app.controller('ProfileCtrl', function($scope, $http){
 		if(getVal){
 			$(this).find('.address_2').removeClass('ion-android-checkbox-outline').addClass('ion-android-checkbox-outline-blank');
 			$('.address_1').addClass('ion-android-checkbox-outline').removeClass('ion-android-checkbox-outline-blank');
-			$("input[name=default_addres]").val(1);
+			$("input#default_address").val(1);
 		}else{
 			$(this).find('.address_2').addClass('ion-android-checkbox-outline').removeClass('ion-android-checkbox-outline-blank');
-			$("input[name=default_addres]").val(2);
+			$("input#default_address").val(2);
 			$('.address_1').removeClass('ion-android-checkbox-outline').addClass('ion-android-checkbox-outline-blank');
 		}
 	 });

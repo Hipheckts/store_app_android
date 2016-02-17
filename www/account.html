@@ -39,7 +39,7 @@
     
     <div ng-repeat="user in details">
       <div class="list profile_overview">
-        <div class="item item-icon-left" > <i class="icon ion-person"></i> {{user.name}} </div>
+        <div class="item item-icon-left"><i class="icon ion-person"></i> {{user.name}} </div>
         <div class="item item-icon-left"> <i class="icon ion-email"></i> {{user.email}} </div>
         <div class="item item-icon-left"> <i class="icon ion-android-pin"></i> {{user.address_1}} </div>
         <div class="item item-icon-left"> <i class="icon ion-android-pin"></i> {{user.address_2}} </div>
@@ -66,16 +66,13 @@
          <div class="clearfix"></div>
         </label>
         <label class="item item-input item-stacked-label">
-        <span class="input-label">Address 1</span>
-        <textarea required="required" ng-model="formData.address1_update">{{user.address_1}}</textarea>
+        <span class="input-label">Address 2</span>
+        <textarea required="required" ng-model="formData.address2_update">{{user.address_2}}</textarea>
         <div class="clearfix"></div>
         </label>
         <label class="item item-input item-stacked-label choose_address_2">
          <a href="javascript:void(0);" class="ion-android-checkbox-outline-blank energized address_2" style="float:right; font-size:24px; margin-right:15px;"></a> <span class="calm" style="float:right; margin:5px;"> Make it default</span>
          <div class="clearfix"></div>
-        </label>
-        <label class="item item-input item-stacked-label">
-        <input type="hidden" name="default_addres" value="1" />
         </label>
         <div style="padding:10px;">
           <button type="submit" class="button button-calm">Save & Update</button>
