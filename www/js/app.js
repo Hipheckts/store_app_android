@@ -272,8 +272,7 @@ app.controller('LogoutCtrl',function($scope, $http,$window){
 });
 
 app.controller('ProfileCtrl', function($scope, $http){
-	   
-	   
+  
 	   $scope.data = {};	 
        $scope.formData = { 
 				'logged_email':''
@@ -281,7 +280,9 @@ app.controller('ProfileCtrl', function($scope, $http){
 	   
 	   //alert(sessionStorage.getItem('login_email'));
 	   $scope.formData.logged_email = sessionStorage.getItem('login_email'); 
-	   $scope.get_user = function(){   
+	   //alert($scope.formData.logged_email);
+	   $scope.get_user = function(){  
+	   //alert('GET USER'); 
 	   $http({
             method: 'POST',
             url: 'http://ideaweaver.in/samples/mystore/profile_user.php', 
@@ -297,12 +298,13 @@ app.controller('ProfileCtrl', function($scope, $http){
 					 'address1_update': data[0].address_1,
 					 'address2_update': data[0].address_2		 
 				 };
+				 $('.account_loader').hide();
 			});
 	 }
 	 
 	 
-	 $scope.userUpdate = function(){  
-	  alert('Userupdate'); 
+	 $scope.userUpdate = function(){ 
+	   $('.account_loader').show(); 
 	   $http({
             method: 'POST',
             url: 'http://ideaweaver.in/samples/mystore/user_update.php', 
@@ -311,9 +313,10 @@ app.controller('ProfileCtrl', function($scope, $http){
 			}).success(function(data, status) {
 				$scope.details = data;
 				if(data==0){
+					//alert('0');
 					$scope.ErrorMsg = "Invalid email address.";
 				}else{
-					$scope.details = data;
+					//alert('1');
 					$scope.formData = {		 
 					 'name_update': data[0].name,
 					 'email_update': data[0].email,
@@ -322,6 +325,7 @@ app.controller('ProfileCtrl', function($scope, $http){
 					 'address2_update': data[0].address_2		 
 				 };
 				}
+				$('.profile_overview').slideDown();
 			});
 	 }
 	 

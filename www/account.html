@@ -34,6 +34,9 @@
     <form id="getUser" data-ng-init="get_user()">
       <input type="hidden" name="logged_email" ng-model="formData.logged_email" value="" />
     </form>
+    
+    <ion-spinner icon="lines" class="spinner spinner-lines account_loader"></ion-spinner>  
+    
     <div ng-repeat="user in details">
       <div class="list profile_overview">
         <div class="item item-icon-left" > <i class="icon ion-person"></i> {{user.name}} </div>
