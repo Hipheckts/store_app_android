@@ -164,7 +164,15 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 	
 	 ngCart.setTaxRate(7.5);
   	 ngCart.setShipping(2.99);   
-	//alert('bbb');
+
+	
+	$scope.send_order = function(){
+	   
+	   alert('aaaa'); 
+	 
+	}
+	
+	
 }]);
 
 

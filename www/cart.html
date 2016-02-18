@@ -27,13 +27,15 @@
   <ion-content class="has-header padding">
 
    <div ng-controller="CartCtrl"> 
+   <form ng-submit="send_order()" method="post"> 
            <script type="text/ng-template" id="template/ngCart/cart.html"> 
+		  
             <div class="list cart_list">
                 <a class="item item-thumbnail-left" href="#" ng-repeat="item in ngCart.getCart().items track by $index">
 				  <img src="http://ideaweaver.in/samples/mystore/{{ item.getImg() }}">
-                  <h2>{{ item.getName() }}</h2>
-                  <p>Price: {{ item.getPrice()}}</p>
-                  <p>Total Price: {{ item.getTotal()}}</p>
+                  <h2>{{ item.getName() }} <input type="text" value="{{ item.getName() }}" name="pro_name" /></h2>
+                  <p>Price: {{ item.getPrice()}} <input type="text" value="{{ item.getPrice() }}" name="pro_price" /></p>
+                  <p>Total Price: {{ item.getTotal()}} <input type="text" value="{{ item.getTotal() }}" name="pro_total" /></p>
 				  <p>
 				    <span class="button button-small button-assertive" ng-class="{'disabled':item.getQuantity()==1}" ng-click="item.setQuantity(-1, true)"><i class="ion-ios-minus"></i></span>
 					 <span class="button button-small button-dark"><i>  {{ item.getQuantity() | number }} </i></span>
@@ -49,7 +51,7 @@
 					Tax ({{ ngCart.getTaxRate() }}%):
 				  </div>
 				  <a class="item" href="#">
-					<strong>{{ ngCart.getTax()}}</strong>
+					<strong>{{ ngCart.getTax()}} <input type="text" value="{{ ngCart.getTax()}}" name="tax" /></strong>
 				  </a>
 				</div>
 				<div class="list" ng-show="ngCart.getShipping()">
@@ -57,7 +59,7 @@
 					Shipping:
 				  </div>
 				  <a class="item" href="#">
-					<strong>{{ ngCart.getShipping()}}</strong>
+					<strong>{{ ngCart.getShipping()}} <input type="text" value="{{ ngCart.getShipping()}}" name="shipping" /></strong>
 				  </a>
 				</div>
 				<div class="list last">
@@ -65,10 +67,12 @@
 					Total:
 				  </div>
 				  <a class="item" href="#">
-					<strong>{{ ngCart.totalCost()}}</strong>
+					<strong>{{ ngCart.totalCost()}} <input type="text" value="{{ ngCart.totalCost()}}" name="total" /></strong>
 				  </a>
 				</div>
 			</div>	
+			
+		  </form>	
            </script> 
             
             <!--<script type="text/ng-template" id="template/ngCart/cart.html">
@@ -145,12 +149,7 @@
 				  </div>
 			   </script>
                
-               <a class="item item-icon-left calm" href="#/app/category" ng-href="#/app/category">
-                <i class="icon ion-navicon"></i>
-                 Back to Category
-              </a>
-               
-          
+                <input type="submit" value="Place Order" class="button button-assertive" style="margin-bottom:15px; float:right;">                  
    </div> 
     
     

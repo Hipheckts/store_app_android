@@ -26,7 +26,7 @@ body .pane{background:#000 url(../img/atlantic.jpg) no-repeat; background-size:1
 
 .bar.bar-dark .title{left:32px !important;}
 .cart_button{font-size:26px; color:#fff; position:relative; float:right; margin:5px; z-index:10; border-radius:3px;}
-.account_button{font-size:26px; color:#fff; position:relative; float:right; margin:5px; z-index:10; border-radius:3px;}
+.account_button, .category_button{font-size:26px; color:#fff; position:relative; float:right; margin:5px; z-index:10; border-radius:3px;}
 .small_logo_button.button.button-small.button-light{ padding:15px; font-size:26px; color:#fff; position:relative; float:right; margin:5px; z-index:10; border-radius:3px; background:#e2e2e2 url(../img/small_logo.png) no-repeat center center !important;}
 
 .detail_pro{position:absolute !important; background:none !important; border:none; right:0 !important; text-align:center !important; color:#444 !important; top:50% !important; z-index:2; font-size:40px !important; width:50px; height:50px; margin-top:-25px;}
