@@ -168,7 +168,7 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 	
 	$scope.send_order = function(){
 	   
-	   alert('aaaa'); 
+	   alert('aaaa');  
 	 
 	}
 	
