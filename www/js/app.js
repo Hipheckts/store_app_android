@@ -164,11 +164,22 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 	
 	 ngCart.setTaxRate(7.5);
   	 ngCart.setShipping(2.99);   
-
+    
+	$scope.data = {};	 
+	
 	
 	$scope.send_order = function(){
 	   
 	   alert('aaaa');  
+	    $http({
+            method: 'POST',
+            url: 'http://ideaweaver.in/samples/mystore/order_placed.php', 
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			data: $scope.formData
+        }).success(function(data, status) {
+            $scope.products = data;
+			alert(data);
+        });	
 	 
 	}
 	
@@ -220,11 +231,13 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 					$('.account_button').hide();
 					$('.logout_button').hide();	
 					$('.small_logo_button').show();
+					$('.home_loader').hide();
 				}else{
 				  $window.location.href ='#/app/category';
 				  $('.account_button').show();	
 				  $('.logout_button').show();	
 				  $('.small_logo_button').hide();
+				  $('.home_loader').hide();
 				}
 				
 			});	

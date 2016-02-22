@@ -33,12 +33,12 @@
             <div class="list cart_list">
                 <a class="item item-thumbnail-left" href="#" ng-repeat="item in ngCart.getCart().items track by $index">
 				  <img src="http://ideaweaver.in/samples/mystore/{{ item.getImg() }}">
-                  <h2>{{ item.getName() }} <input type="text" value="{{ item.getName() }}" name="pro_name" /></h2>
-                  <p>Price: {{ item.getPrice()}} <input type="text" value="{{ item.getPrice() }}" name="pro_price" /></p>
-                  <p>Total Price: {{ item.getTotal()}} <input type="text" value="{{ item.getTotal() }}" name="pro_total" /></p>
+                  <h2>{{ item.getName() }} <input type="hidden" value="{{ item.getName() }}" ng-model="formData.pro_name" /></h2>
+                  <p>Price: {{ item.getPrice()}} <input type="hidden" value="{{ item.getPrice() }}" ng-model="formData.pro_price" /></p>
+                  <p>Total Price: {{ item.getTotal()}} <input type="hidden" value="{{ item.getTotal() }}" ng-model="formData.pro_total" /></p>
 				  <p>
 				    <span class="button button-small button-assertive" ng-class="{'disabled':item.getQuantity()==1}" ng-click="item.setQuantity(-1, true)"><i class="ion-ios-minus"></i></span>
-					 <span class="button button-small button-dark"><i>  {{ item.getQuantity() | number }} </i></span>
+					 <span class="button button-small button-dark"><i>  {{ item.getQuantity() | number }} <input type="hidden" value="{{ item.getTotal() }}" ng-model="formData.pro_total" />  </i></span>
 					<span class="button button-small button-assertive" ng-click="item.setQuantity(1, true)"><i class="ion-ios-plus"></i></span>
 				  </p>
 				  <div ng-click="ngCart.removeItemById(item.getId())" class="ion-close-round"></div>
@@ -51,7 +51,7 @@
 					Tax ({{ ngCart.getTaxRate() }}%):
 				  </div>
 				  <a class="item" href="#">
-					<strong>{{ ngCart.getTax()}} <input type="text" value="{{ ngCart.getTax()}}" name="tax" /></strong>
+					<strong>{{ ngCart.getTax()}} <input type="hidden" value="{{ ngCart.getTax()}}" name="tax" /></strong>
 				  </a>
 				</div>
 				<div class="list" ng-show="ngCart.getShipping()">
@@ -59,7 +59,7 @@
 					Shipping:
 				  </div>
 				  <a class="item" href="#">
-					<strong>{{ ngCart.getShipping()}} <input type="text" value="{{ ngCart.getShipping()}}" name="shipping" /></strong>
+					<strong>{{ ngCart.getShipping()}} <input type="hidden" value="{{ ngCart.getShipping()}}" name="shipping" /></strong>
 				  </a>
 				</div>
 				<div class="list last">
@@ -67,7 +67,7 @@
 					Total:
 				  </div>
 				  <a class="item" href="#">
-					<strong>{{ ngCart.totalCost()}} <input type="text" value="{{ ngCart.totalCost()}}" name="total" /></strong>
+					<strong>{{ ngCart.totalCost()}} <input type="hidden" value="{{ ngCart.totalCost()}}" name="total"  /></strong>
 				  </a>
 				</div>
 			</div>	
