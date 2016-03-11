@@ -20,6 +20,10 @@
 .table_cart td,.table_cart th{border:1px solid #e2e2e2; border-collapse:collapse; padding:5px;}
 
 </style>
+
+
+
+
 <ion-view title="Cart">
   <ion-nav-buttons side="left">
     <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
@@ -27,18 +31,17 @@
   <ion-content class="has-header padding">
 
    <div ng-controller="CartCtrl"> 
-   <form ng-submit="send_order()" method="post"> 
-           <script type="text/ng-template" id="template/ngCart/cart.html"> 
-		  
+           <script type="text/ng-template" id="template/ngCart/cart.html"> 				
             <div class="list cart_list">
-                <a class="item item-thumbnail-left" href="#" ng-repeat="item in ngCart.getCart().items track by $index">
+                <a class="item item-thumbnail-left" href="#" ng-repeat="item in ngCart.getCart().items track by $index">				 
 				  <img src="http://ideaweaver.in/samples/mystore/{{ item.getImg() }}">
-                  <h2>{{ item.getName() }} <input type="hidden" value="{{ item.getName() }}" ng-model="formData.pro_name" /></h2>
-                  <p>Price: {{ item.getPrice()}} <input type="hidden" value="{{ item.getPrice() }}" ng-model="formData.pro_price" /></p>
-                  <p>Total Price: {{ item.getTotal()}} <input type="hidden" value="{{ item.getTotal() }}" ng-model="formData.pro_total" /></p>
+                  <span ng-init = "formData.pro_name = item.getName()"></span>
+				  <h2>{{ item.getName() }} <input type="hidden" ng-model="formData.pro_name" /></h2>
+                  <p>Price: {{ item.getPrice()}} <input type="hidden" value="{{ item.getPrice() }}" name="pro_price" /></p>
+                  <p>Total Price: {{ item.getTotal()}} <input type="hidden" value="{{ item.getTotal() }}" name="pro_total" /></p>
 				  <p>
 				    <span class="button button-small button-assertive" ng-class="{'disabled':item.getQuantity()==1}" ng-click="item.setQuantity(-1, true)"><i class="ion-ios-minus"></i></span>
-					 <span class="button button-small button-dark"><i>  {{ item.getQuantity() | number }} <input type="hidden" value="{{ item.getTotal() }}" ng-model="formData.pro_total" />  </i></span>
+					 <span class="button button-small button-dark"><i>  {{ item.getQuantity() | number }} <input type="hidden" value="{{ item.getTotal() }}" name="pro_total" />  </i></span>
 					<span class="button button-small button-assertive" ng-click="item.setQuantity(1, true)"><i class="ion-ios-plus"></i></span>
 				  </p>
 				  <div ng-click="ngCart.removeItemById(item.getId())" class="ion-close-round"></div>
@@ -71,8 +74,6 @@
 				  </a>
 				</div>
 			</div>	
-			
-		  </form>	
            </script> 
             
             <!--<script type="text/ng-template" id="template/ngCart/cart.html">
@@ -131,6 +132,50 @@
            </script>-->
           <ngcart-cart></ngcart-cart> 
           
+          <form id="getlogUser" data-ng-init="getlogUser()">
+           <input type="hidden" ng-model="formData.logged_email" />
+         </form>
+          
+          <form id="orderUpdate" method="post" ng-submit="orderUpdate()" style="display:none;">                
+                <label> 
+                   <h3 class="input-label">Order ID</h3>
+                   <h3 class="energized" ng-bind="showOrderID"></h3>
+                   <input type="hidden" ng-model="formData.orderID">
+                </label>   
+                <label> 
+                  <h3 class="input-label">Registered Email</h3>
+                  <h3 class="energized" ng-bind="formData.email_update"></h3>
+                  <input readonly="readonly" style="background:none;" type="hidden" value="{{user.email}}" ng-model="formData.email_update">
+                </label>
+                <label>
+                <h3 class="input-label">Address 1</h3>
+                <h3 class="energized" ng-bind="formData.address1_update"></h3>
+                <div class="clearfix"></div>
+                </label>
+                <label>
+                <h3 class="input-label">Address 2</h3>
+                <h3 class="energized" ng-bind="formData.address2_update"></h3>
+                <div class="clearfix"></div>
+                </label>
+                <label>
+                
+                
+                
+                 <h3 class="input-label">Billing Address</h3>
+                <ion-list>
+                   <ion-radio ng-repeat="item in addressList"
+                           ng-value="item.value"
+                           ng-model="formData.defaultAddress">
+                  {{ item.text }}
+                 </ion-radio>
+                </ion-list>
+                </label> 
+                 <label>
+                 <div style="padding:10px 0 20px;">
+                  <button type="submit" class="button button-assertive placeorder-btn">Place Order</button>
+                 </div>
+                </label>
+              </form>          
            <script type="text/ng-template" id="template/ngCart/addtocart.html">
 				  <div ng-hide="attrs.id">
 					<a class="btn btn-lg btn-primary" ng-disabled="true" ng-transclude></a>
@@ -148,8 +193,11 @@
 					</mark>
 				  </div>
 			   </script>
+               <!-- <input type="submit" value="Place Order" class="button button-assertive" style="margin-bottom:15px; float:right;">   --> 
+             <!--   <pre> {{ summary |json}}</pre>          -->
+             <a class="button button-assertive checkout-btn" ng-click="checkout()">Checkout</a> 
+             <!--<a class="button button-assertive placeorder-btn" ng-click="placeOrder()" style="display:none;">Checkout</a> -->
                
-                <input type="submit" value="Place Order" class="button button-assertive" style="margin-bottom:15px; float:right;">                  
    </div> 
     
     

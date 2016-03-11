@@ -8,6 +8,7 @@
 
 var app = angular.module('starter', ['ionic', 'starter.controllers','ngCart']);
 
+
 app.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     if(window.StatusBar) {
@@ -67,7 +68,8 @@ app.run(function($ionicPlatform) {
       url: "/account",
       views: {
         'menuContent' :{
-          templateUrl: "account.html"
+          templateUrl: "account.html",
+		  controller:'ProfileCtrl'
         }
       }
     }).state('app.logout', {
@@ -165,21 +167,70 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 	 ngCart.setTaxRate(7.5);
   	 ngCart.setShipping(2.99);   
     
-	$scope.data = {};	 
+	$scope.data = {};	  	
 	
+	//alert(ngCartItem(name));
+     
+	$scope.checkout = function() {
+         $scope.summary = ngCart.toObject();
+		 $http({
+            method: 'POST',
+            url: 'http://ideaweaver.in/samples/mystore/order_placed.php', 
+			data: ngCart.toObject()
+        }).success(function(data, status) {
+            $scope.orderid = data;
+			$scope.formData.orderID = data;
+			$scope.showOrderID = data;
+			$('#orderUpdate').slideDown();
+		    $('.placeorder-btn').show();
+		    $('.checkout-btn').hide();
+        });
+    } 
 	
-	$scope.send_order = function(){
+	 
+       $scope.formData = { 
+				'logged_email':''
+			  };
 	   
-	   alert('aaaa');  
+	   
+	   $scope.getlogUser = function(){  
+	   $http({
+            method: 'POST',
+            url: 'http://ideaweaver.in/samples/mystore/profile_user.php', 
+			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+			data: $.param($scope.formData)
+			}).success(function(data, status) {
+				$scope.details = data;
+				//alert(data);
+				$scope.formData = {		 
+					 'name_update': data[0].name,
+					 'email_update': data[0].email,
+					 'mobile_update': data[0].mobile,
+					 'address1_update': data[0].address_1,
+					 'address2_update': data[0].address_2,
+					 'defaultAddress':1
+				 };
+				 
+				 $('.account_loader').hide();
+			}); 
+	 }
+	 
+	   
+	$scope.addressList = [
+		{ text: "Address 1", value: "1" },
+		{ text: "Address 2", value: "2" }
+	  ];  
+ 
+	$scope.orderUpdate = function(){
 	    $http({
             method: 'POST',
             url: 'http://ideaweaver.in/samples/mystore/order_placed.php', 
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-			data: $scope.formData
+			data: $.param($scope.formData)
         }).success(function(data, status) {
             $scope.products = data;
 			alert(data);
-        });	
+        });
 	 
 	}
 	
@@ -189,8 +240,7 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 
 
 app.controller('HomeCtrl',function($scope, $http, $window){
-	
-	 
+
 	 $(document).on("click",".register_link",function(){
 		$('form#signup_form').slideDown();
 		$('form#login_form').slideUp();
@@ -212,9 +262,9 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 	  
 	  
 	  $scope.login_post = function(){
-		  
+
 		  $('.home_loader').show();
-		  
+ 
 		  $http({
             method: 'POST',
             url: 'http://ideaweaver.in/samples/mystore/login.php', 
@@ -222,10 +272,6 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 			data: $.param($scope.formData)
 			}).success(function(data, status) {
 				$scope.login = data;
-				sessionStorage.setItem('login_email', data[0].email);
-				//var favoriteCookie = sessionStorage.getItem('login_email');
-				//alert(favoriteCookie);
-				
 				if(data==0){
 					$scope.ErrorMsg = "Invalid login credentials, try again.";
 					$('.account_button').hide();
@@ -233,6 +279,8 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 					$('.small_logo_button').show();
 					$('.home_loader').hide();
 				}else{
+				  localStorage.setItem("token",data[0].email);
+				  $scope.formData.logged_email = localStorage.getItem("token");	
 				  $window.location.href ='#/app/category';
 				  $('.account_button').show();	
 				  $('.logout_button').show();	
@@ -268,7 +316,6 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 				  $('.account_button').show();	
 				  $('.logout_button').show();	
 				  $('.small_logo_button').hide();
-				  sessionStorage.setItem('login_email', $scope.formData.email_reg);
 				}
 			});
 
@@ -282,9 +329,9 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 
 app.controller('LogoutCtrl',function($scope, $http,$window){
 	
-		$scope.$on('$ionicView.enter', function() {	
-		      sessionStorage.setItem('login_email', '');		  
+		$scope.$on('$ionicView.enter', function() {			  
 			  $scope.LogoutMsg = "You have successfully logout.";
+			  localStorage.removeItem("token");
 			  $('.account_button').hide();
 			  $('.small_logo_button').show();
 			  $('.logout_button').hide();
@@ -295,36 +342,39 @@ app.controller('LogoutCtrl',function($scope, $http,$window){
 			
 });
 
-app.controller('ProfileCtrl', function($scope, $http,$window){
-  
+app.controller('ProfileCtrl', function($scope, $http,$window,$timeout){
+	
 	   $scope.data = {};	 
-       $scope.formData = { 
+	
+	   $scope.$on("$ionicView.beforeEnter", function() {
+		alert(localStorage.getItem("token"));   
+        $scope.formData = { 
 				'logged_email':''
-			  };
-	   
-	   //alert(sessionStorage.getItem('login_email'));
-	   $scope.formData.logged_email = sessionStorage.getItem('login_email');  
-	   //alert($scope.formData.logged_email);
-	   $scope.get_user = function(){  
-	   //alert('GET USER'); 
-	   $http({
-            method: 'POST',
-            url: 'http://ideaweaver.in/samples/mystore/profile_user.php', 
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-			data: $.param($scope.formData)
-			}).success(function(data, status) {
-				$scope.details = data;
-				$scope.formData = {		 
-					 'name_update': data[0].name,
-					 'email_update': data[0].email,
-					 'pass_update': data[0].password,
-					 'address1_update': data[0].address_1,
-					 'address2_update': data[0].address_2
-				 };
-				 
-				 $('.account_loader').hide();
-			}); 
-	 }
+	    };
+	   $scope.formData.logged_email = localStorage.getItem("token");
+		  // $scope.get_user = function(){  
+			   $http({
+					method: 'POST',
+					url: 'http://ideaweaver.in/samples/mystore/profile_user.php', 
+					headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+					data: $.param($scope.formData)
+					}).success(function(data, status) {
+						$scope.details = data;
+						$scope.formData = {		 
+							 'name_update': data[0].name,
+							 'email_update': data[0].email,
+							 'pass_update': data[0].password,
+							 'address1_update': data[0].address_1,
+							 'address2_update': data[0].address_2
+						 };
+						 $('.account_loader').hide();
+					}); 
+			
+		// }
+		 
+	     
+	  });	 
+	
 	 $scope.userUpdate = function(){ 
 	   $('.account_loader').show(); 
 	   $http({
@@ -383,11 +433,6 @@ app.controller('ProfileCtrl', function($scope, $http,$window){
 	 
 
 });
-
-
-
-
-
 
 
 
