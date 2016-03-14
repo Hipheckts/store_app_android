@@ -61,7 +61,16 @@ app.run(function($ionicPlatform) {
       url: "/cart",
       views: {
         'menuContent' :{
-          templateUrl: "cart.html"
+          templateUrl: "cart.html",
+		  controller:'CartCtrl'
+        }
+      }
+    }).state('app.confirm-order', {
+      url: "/confirm-order",
+      views: {
+        'menuContent' :{
+          templateUrl: "confirm-order.html",
+		  controller:'ConfirmOrderCtrl'
         }
       }
     }).state('app.account', {
@@ -162,16 +171,40 @@ app.controller('ProDetailsCtrl',[ '$scope', '$http','$location', '$stateParams',
 }]);
 
 
-app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCart',function($scope,$http, $location, $stateParams, ngCart) {
+app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCart','$window',function($scope,$http, $location, $stateParams, ngCart,$window) {
 	
 	 ngCart.setTaxRate(7.5);
   	 ngCart.setShipping(2.99);   
     
-	$scope.data = {};	  	
+	$scope.data = {};	
+	
+	
+	$scope.$on("$ionicView.beforeEnter", function() {
+		alert(localStorage.getItem("token"));
+		if(!localStorage.getItem("token")){
+		  ngCart.empty();
+		}
+	
 	
 	//alert(ngCartItem(name));
-     
-	$scope.checkout = function() {
+
+	$scope.confirm_order = function() {
+		alert('aa');
+         $scope.summary = ngCart.toObject();
+		 $http({
+            method: 'POST',
+            url: 'http://ideaweaver.in/samples/mystore/order_placed.php', 
+			data: ngCart.toObject()
+        }).success(function(data, status) {
+            $scope.orderid = data;
+			$scope.formData.orderID = data;
+			$scope.showOrderID = data;
+			localStorage.setItem("orderID",data);
+			alert(data);
+			$window.location.href ='#/app/confirm-order';
+        });
+    } 
+	/*$scope.checkout = function() {
          $scope.summary = ngCart.toObject();
 		 $http({
             method: 'POST',
@@ -185,14 +218,14 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 		    $('.placeorder-btn').show();
 		    $('.checkout-btn').hide();
         });
-    } 
+    } */
 	
 	 
        $scope.formData = { 
 				'logged_email':''
 			  };
 	   
-	   
+	   $scope.formData.logged_email = localStorage.getItem("token");
 	   $scope.getlogUser = function(){  
 	   $http({
             method: 'POST',
@@ -233,14 +266,69 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
         });
 	 
 	}
-	
+	});
 	
 }]);
-
+app.controller('ConfirmOrderCtrl',function($scope, $http, $window){
+	$scope.$on("$ionicView.afterEnter", function() {
+		$scope.showOrderID = localStorage.getItem("orderID");
+		
+		//alert(localStorage.getItem("token"));
+		$scope.formData = {};
+	   
+		   $scope.formData.logged_email = localStorage.getItem("token");
+		   //$scope.formData.orderID = localStorage.getItem("orderID");
+		   $http({
+				method: 'POST',
+				url: 'http://ideaweaver.in/samples/mystore/profile_user.php', 
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: $.param($scope.formData)
+				}).success(function(data, status) {
+					$scope.details = data;
+					alert(localStorage.getItem("orderID"));
+					$scope.formData = {		 
+						 'name_update': data[0].name,
+						 'email_update': data[0].email,
+						 'mobile_update': data[0].mobile,
+						 'address1_update': data[0].address_1,
+						 'address2_update': data[0].address_2,
+						 'orderID': localStorage.getItem("orderID"),
+						 'defaultAddress':1
+					 };
+					 
+					 $('.account_loader').hide();
+				}); 
+		 
+		   
+		$scope.addressList = [
+			{ text: "Address 1", value: "1" },
+			{ text: "Address 2", value: "2" }
+		  ];  
+		  
+		  
+		 $scope.orderUpdate = function(){
+			$http({
+				method: 'POST',
+				url: 'http://ideaweaver.in/samples/mystore/order_placed.php', 
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: $.param($scope.formData)
+			}).success(function(data, status) {
+				$scope.products = data;
+				alert(data);
+			});
+		 
+		} 
+			
+		
+	});
+	
+});
 
 
 app.controller('HomeCtrl',function($scope, $http, $window){
-
+     
+	 localStorage.removeItem("token");
+	  
 	 $(document).on("click",".register_link",function(){
 		$('form#signup_form').slideDown();
 		$('form#login_form').slideUp();
@@ -429,11 +517,30 @@ app.controller('ProfileCtrl', function($scope, $http,$window,$timeout){
 		 $('form#userUpdate').slideUp();
 		 $('.profile_overview').slideDown();		 
 	 });
-	 
-	 
+
+
+  var deviceInfo = cordova.require("cordova/plugin/DeviceInformation");
+	deviceInfo.get(
+	   function(result) {
+		  alert(result) 
+		  console.log("result = " + result);
+	   },function() {
+		  alert('error'); 
+		  console.log("error");
+	});
+	
 
 });
 
+alert('aa');
+window.plugins.imeiplugin.getImei(callback);
+
+function callback(imei) {
+	alert(imei);
+    console.log("My Android IMEI :" + imei);
+}
+
+callback();
 
 
 
