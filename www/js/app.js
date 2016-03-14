@@ -180,7 +180,7 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 	
 	
 	$scope.$on("$ionicView.beforeEnter", function() {
-		alert(localStorage.getItem("token"));
+		//alert(localStorage.getItem("token"));
 		if(!localStorage.getItem("token")){
 		  ngCart.empty();
 		}
@@ -189,7 +189,7 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 	//alert(ngCartItem(name));
 
 	$scope.confirm_order = function() {
-		alert('aa');
+		//alert('aa');
          $scope.summary = ngCart.toObject();
 		 $http({
             method: 'POST',
@@ -200,7 +200,7 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 			$scope.formData.orderID = data;
 			$scope.showOrderID = data;
 			localStorage.setItem("orderID",data);
-			alert(data);
+			//alert(data);
 			$window.location.href ='#/app/confirm-order';
         });
     } 
@@ -262,7 +262,7 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 			data: $.param($scope.formData)
         }).success(function(data, status) {
             $scope.products = data;
-			alert(data);
+			//alert(data);
         });
 	 
 	}
@@ -285,7 +285,7 @@ app.controller('ConfirmOrderCtrl',function($scope, $http, $window){
 				data: $.param($scope.formData)
 				}).success(function(data, status) {
 					$scope.details = data;
-					alert(localStorage.getItem("orderID"));
+					//alert(localStorage.getItem("orderID"));
 					$scope.formData = {		 
 						 'name_update': data[0].name,
 						 'email_update': data[0].email,
@@ -314,7 +314,7 @@ app.controller('ConfirmOrderCtrl',function($scope, $http, $window){
 				data: $.param($scope.formData)
 			}).success(function(data, status) {
 				$scope.products = data;
-				alert(data);
+				//alert(data);
 			});
 		 
 		} 
@@ -420,6 +420,7 @@ app.controller('LogoutCtrl',function($scope, $http,$window){
 		$scope.$on('$ionicView.enter', function() {			  
 			  $scope.LogoutMsg = "You have successfully logout.";
 			  localStorage.removeItem("token");
+			  localStorage.removeItem("orderID");
 			  $('.account_button').hide();
 			  $('.small_logo_button').show();
 			  $('.logout_button').hide();
@@ -435,7 +436,7 @@ app.controller('ProfileCtrl', function($scope, $http,$window,$timeout){
 	   $scope.data = {};	 
 	
 	   $scope.$on("$ionicView.beforeEnter", function() {
-		alert(localStorage.getItem("token"));   
+		//alert(localStorage.getItem("token"));   
         $scope.formData = { 
 				'logged_email':''
 	    };
@@ -519,20 +520,9 @@ app.controller('ProfileCtrl', function($scope, $http,$window,$timeout){
 	 });
 
 
-  var deviceInfo = cordova.require("cordova/plugin/DeviceInformation");
-	deviceInfo.get(
-	   function(result) {
-		  alert(result) 
-		  console.log("result = " + result);
-	   },function() {
-		  alert('error'); 
-		  console.log("error");
-	});
-	
-
 });
 
-alert('aa');
+//alert('aa');
 window.plugins.imeiplugin.getImei(callback);
 
 function callback(imei) {
