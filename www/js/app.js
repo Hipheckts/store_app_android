@@ -254,7 +254,7 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 		{ text: "Address 2", value: "2" }
 	  ];  
  
-	$scope.orderUpdate = function(){
+	/*$scope.orderUpdate = function(){
 	    $http({
             method: 'POST',
             url: 'http://ideaweaver.in/samples/mystore/order_placed.php', 
@@ -265,11 +265,11 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 			//alert(data);
         });
 	 
-	}
+	}*/
 	});
 	
 }]);
-app.controller('ConfirmOrderCtrl',function($scope, $http, $window){
+app.controller('ConfirmOrderCtrl',[ '$scope', '$http','$location', '$stateParams','ngCart','$window',function($scope,$http, $location, $stateParams, ngCart,$window) {
 	$scope.$on("$ionicView.afterEnter", function() {
 		$scope.showOrderID = localStorage.getItem("orderID");
 		
@@ -297,6 +297,7 @@ app.controller('ConfirmOrderCtrl',function($scope, $http, $window){
 					 };
 					 
 					 $('.account_loader').hide();
+					 
 				}); 
 		 
 		   
@@ -314,7 +315,15 @@ app.controller('ConfirmOrderCtrl',function($scope, $http, $window){
 				data: $.param($scope.formData)
 			}).success(function(data, status) {
 				$scope.products = data;
-				//alert(data);
+				//alert(localStorage.getItem("orderID")+"YES");
+				//if(data=='"'+localStorage.getItem("orderID")+"YES"+'"'){
+				ngCart.empty();
+				alert('Your order has been confirmed. After press OK you will redirect on Category page. Keeep Shopping!');
+				$window.location.href ='#/app/category';
+				
+				/*}else{
+				  alert(data);	
+				}*/
 			});
 		 
 		} 
@@ -322,7 +331,7 @@ app.controller('ConfirmOrderCtrl',function($scope, $http, $window){
 		
 	});
 	
-});
+}]);
 
 
 app.controller('HomeCtrl',function($scope, $http, $window){
