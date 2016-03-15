@@ -32,14 +32,14 @@
 
    <div ng-controller="ConfirmOrderCtrl"> 
           
-                   <input type="text" ng-model="formData.logged_email" />
+                   <input type="hidden" ng-model="formData.logged_email" />
                    
           
           <form id="orderUpdate" method="post" ng-submit="orderUpdate()">                
                 <label> 
                    <h3 class="input-label">Order ID</h3>
                    <h3 class="energized" ng-bind="showOrderID"></h3>
-                   <input type="text" value="{{user.order_id}}" ng-model="formData.orderID">
+                   <input type="hidden" value="{{user.order_id}}" ng-model="formData.orderID">
                 </label>   
                 <label> 
                   <h3 class="input-label">Registered Email</h3>

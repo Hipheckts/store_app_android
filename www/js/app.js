@@ -531,15 +531,5 @@ app.controller('ProfileCtrl', function($scope, $http,$window,$timeout){
 
 });
 
-//alert('aa');
-window.plugins.imeiplugin.getImei(callback);
-
-function callback(imei) {
-	alert(imei);
-    console.log("My Android IMEI :" + imei);
-}
-
-callback();
-
 
 
