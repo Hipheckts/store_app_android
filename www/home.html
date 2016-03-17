@@ -38,9 +38,10 @@
              </div>
            </div>
          </div>
-        <h4 class="assertive" ng-bind="ErrorMsg"></h4>
+        
         <div class="list">    
          <form id="login_form" method="post" ng-submit="login_post()">
+          <label class="item item-input item-stacked-label"><h2 class="energized error_signin-signup-msg" ng-bind="ErrorMsg"></h2></label>
           <label class="item item-input item-stacked-label">
             <span class="input-label">Email</span>
             <input required="required" type="email" placeholder="email@domain.com" ng-model="formData.email">
@@ -55,6 +56,7 @@
           </div>  
          </form> 
          <form id="signup_form" method="post" style="display:none;" ng-submit="register_post()">
+          <label class="item item-input item-stacked-label"><h2 class="energized error_signin-signup-msg" ng-bind="ErrorMsgSignUp"></h2></label>
           <label class="item item-input item-stacked-label">
             <span class="input-label">Name</span>
             <input required="required" type="text" placeholder="Your Name" ng-model="formData.name_reg">

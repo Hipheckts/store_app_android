@@ -29,7 +29,8 @@ app.run(function($ionicPlatform) {
       url: "/home",
       views: {
         'menuContent' :{
-          templateUrl: "home.html"
+          templateUrl: "home.html",
+		  controller: 'HomeCtrl'
         }
       }
     })
@@ -309,14 +310,18 @@ app.controller('ConfirmOrderCtrl',[ '$scope', '$http','$location', '$stateParams
 app.controller('HomeCtrl',function($scope, $http, $window){
      
 	 localStorage.removeItem("token");
-	  
+	 $scope.$on("$ionicView.afterEnter", function() { 
+	   $('.error_signin-signup-msg').hide(); 
+	 });
 	 $(document).on("click",".register_link",function(){
 		$('form#signup_form').slideDown();
 		$('form#login_form').slideUp();
+		$('.error_signin-signup-msg').hide();
 	  });
 	  $(document).on("click",".login_link",function(){
 		$('form#signup_form').slideUp();
 		$('form#login_form').slideDown();
+		$('.error_signin-signup-msg').hide();
 	  });
 	  
 	  
@@ -343,11 +348,12 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 				$scope.login = data;
 				if(data==0){
 					$scope.ErrorMsg = "Invalid login credentials, try again.";
+					$('.error_signin-signup-msg').show(); 
 					$('.account_button').hide();
 					$('.logout_button').hide();	
 					$('.small_logo_button').show();
 					$('.home_loader').hide();
-				}else{
+				}else{	
 				  localStorage.setItem("token",data[0].email);
 				  $scope.formData.logged_email = localStorage.getItem("token");	
 				  $window.location.href ='#/app/category';
@@ -382,8 +388,9 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 				$('.home_loader').hide();
 				$scope.register = data;
 				if(data==0){
-					$scope.ErrorMsg = "Email already exist!";				
-				}else{
+					$scope.ErrorMsgSignUp = "Email already exist!";	
+					$('.error_signin-signup-msg').show(); 			
+				}else{ 	
 				  localStorage.setItem("token",data);	
 				  $window.location.href ='#/app/category';
 				  $('.account_button').show();	
