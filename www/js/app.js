@@ -179,11 +179,44 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 	$scope.data = {};	
 	
 	
-	$scope.$on("$ionicView.beforeEnter", function() {
-		//alert(localStorage.getItem("token"));
+	$scope.$on("$ionicView.afterEnter", function() {
 		if(!localStorage.getItem("token")){
-		  ngCart.empty();
+		  $('.checkout-btn').hide(); 		
+		  ngCart.empty(); 
+		}else{	
+		  $('.checkout-btn').show(); 	
 		}
+		   $scope.formData= {};
+		
+		   $scope.formData.logged_email = localStorage.getItem("token");
+		   $http({
+				method: 'POST',
+				url: 'http://ideaweaver.in/samples/mystore/profile_user.php', 
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+				data: $.param($scope.formData)
+				}).success(function(data, status) {
+					$scope.details = data;
+					
+					//alert(localStorage.getItem("orderID"));
+					$scope.formData = {		 
+						 'name_update': data[0].name,
+						 'email_update': data[0].email,
+						 'mobile_update': data[0].mobile,
+						 'address1_update': data[0].address_1,
+						 'address2_update': data[0].address_2,
+						 'orderID': localStorage.getItem("orderID"),
+						 'defaultAddress':1
+					 };
+					 if(data[0].address_1==''){
+						$('.add_address').show();
+						$('.checkout-btn').hide(); 
+					  }else{
+						$('.add_address').hide();  
+					  }
+					 $('.account_loader').hide();
+					 
+				});
+		
 	
 	
 	//alert(ngCartItem(name));
@@ -204,68 +237,7 @@ app.controller('CartCtrl',[ '$scope', '$http','$location', '$stateParams','ngCar
 			$window.location.href ='#/app/confirm-order';
         });
     } 
-	/*$scope.checkout = function() {
-         $scope.summary = ngCart.toObject();
-		 $http({
-            method: 'POST',
-            url: 'http://ideaweaver.in/samples/mystore/order_placed.php', 
-			data: ngCart.toObject()
-        }).success(function(data, status) {
-            $scope.orderid = data;
-			$scope.formData.orderID = data;
-			$scope.showOrderID = data;
-			$('#orderUpdate').slideDown();
-		    $('.placeorder-btn').show();
-		    $('.checkout-btn').hide();
-        });
-    } */
-	
-	 
-       $scope.formData = { 
-				'logged_email':''
-			  };
-	   
-	   $scope.formData.logged_email = localStorage.getItem("token");
-	   $scope.getlogUser = function(){  
-	   $http({
-            method: 'POST',
-            url: 'http://ideaweaver.in/samples/mystore/profile_user.php', 
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-			data: $.param($scope.formData)
-			}).success(function(data, status) {
-				$scope.details = data;
-				//alert(data);
-				$scope.formData = {		 
-					 'name_update': data[0].name,
-					 'email_update': data[0].email,
-					 'mobile_update': data[0].mobile,
-					 'address1_update': data[0].address_1,
-					 'address2_update': data[0].address_2,
-					 'defaultAddress':1
-				 };
-				 
-				 $('.account_loader').hide();
-			}); 
-	 }
-	 
-	   
-	$scope.addressList = [
-		{ text: "Address 1", value: "1" },
-		{ text: "Address 2", value: "2" }
-	  ];  
- 
-	/*$scope.orderUpdate = function(){
-	    $http({
-            method: 'POST',
-            url: 'http://ideaweaver.in/samples/mystore/order_placed.php', 
-			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-			data: $.param($scope.formData)
-        }).success(function(data, status) {
-            $scope.products = data;
-			//alert(data);
-        });
-	 
-	}*/
+
 	});
 	
 }]);
@@ -398,17 +370,21 @@ app.controller('HomeCtrl',function($scope, $http, $window){
 	   
 	   
 	   $scope.register_post = function(){
-
+         
+		 $('.home_loader').show();
+		 
 		 $http({
             method: 'POST',
             url: 'http://ideaweaver.in/samples/mystore/register.php', 
 			headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 			data: $.param($scope.formData)
 			}).success(function(data, status) {
+				$('.home_loader').hide();
 				$scope.register = data;
 				if(data==0){
 					$scope.ErrorMsg = "Email already exist!";				
 				}else{
+				  localStorage.setItem("token",data);	
 				  $window.location.href ='#/app/category';
 				  $('.account_button').show();	
 				  $('.logout_button').show();	
@@ -428,13 +404,15 @@ app.controller('LogoutCtrl',function($scope, $http,$window){
 	
 		$scope.$on('$ionicView.enter', function() {			  
 			  $scope.LogoutMsg = "You have successfully logout.";
-			  localStorage.removeItem("token");
-			  localStorage.removeItem("orderID");
 			  $('.account_button').hide();
 			  $('.small_logo_button').show();
 			  $('.logout_button').hide();
 			  setTimeout(function(){	
 				$window.location.href ='#/app/home';
+				localStorage.removeItem("token");
+			    localStorage.removeItem("orderID");
+				$('form#signup_form').slideUp();
+				$('form#login_form').slideDown();
 			  },2000);
 		});
 			
