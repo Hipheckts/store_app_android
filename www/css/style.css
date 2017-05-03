@@ -3,7 +3,7 @@
 
 body{background:#000;}
 
-body .pane{background:#000 url(../img/atlantic.jpg) no-repeat; background-size:100% 100%;}
+body .pane{background:#000 url(../img/body-bg.jpg) no-repeat; background-size:100% 100%;}
 
 .spinner{
   position:absolute;
